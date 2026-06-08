@@ -977,6 +977,7 @@
     position: absolute;
     inset: 0;
     background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(184,146,74,0.12) 0%, transparent 60%);
+    pointer-events: none;
   }
 
   .cta-headline {
@@ -1239,8 +1240,7 @@
   }
 
   .session-card-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: block;
   }
 
   .session-body-col { padding: 44px 48px; }
@@ -1321,6 +1321,7 @@
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--warm-grey);
+    margin-bottom: 2px;
   }
 
   .session-price {
@@ -1437,15 +1438,17 @@
   }
 
   .booking-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 60px;
-    align-items: start;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    max-width: 860px;
+    margin: 0 auto;
   }
 
   .booking-sidebar {
-    position: sticky;
-    top: 100px;
+    position: static;
+    top: auto;
+    width: 100%;
   }
 
   .booking-sidebar-card {
@@ -1713,6 +1716,8 @@
     .intro-strip-inner { gap: 24px; }
 
     .booking-form-area { padding: 24px 16px; }
+    .booking-sidebar { display:flex; flex-direction:column; gap:12px; }
+    #contactName, #contactEmail { width:100%; }
     .form-row { grid-template-columns: 1fr; }
     .media-upload-cta { padding: 40px 24px; }
     .legal-section { padding: 24px 0; }
@@ -1735,6 +1740,41 @@
     .booking-form-area { padding: 20px 14px; }
     .footer-inner { gap: 28px; }
   }
+
+  /* Mobile sticky CTA */
+  .mobile-sticky-cta {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-sticky-cta {
+      display: block;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      padding: 12px 16px;
+      background: var(--forest);
+      border-top: 1px solid rgba(173,131,48,0.3);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+    }
+    .mobile-sticky-cta a {
+      display: block;
+      text-align: center;
+      padding: 14px;
+      background: var(--gold);
+      color: var(--ivory);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    /* Add bottom padding to body so content isn't hidden behind sticky btn */
+    body { padding-bottom: 72px; }
+  }
 </style>
 </head>
 <body>
@@ -1745,7 +1785,6 @@
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('about')">About</a></li>
     <li><a href="#" onclick="showPage('sessions')">Sessions</a></li>
-    <li><a href="#" onclick="showPage('testimonials')">Testimonials</a></li>
     <li><a href="#" onclick="showPage('faq')">FAQ</a></li>
   </ul>
   <a href="#" class="btn btn-primary btn-sm nav-cta" onclick="showPage('booking')" style="padding:11px 24px;font-size:0.72rem;">Book a Session</a>
@@ -1754,12 +1793,16 @@
   </button>
 </nav>
 
+<!-- Mobile Sticky CTA -->
+<div class="mobile-sticky-cta" id="mobileStickyBtn">
+  <a href="#" onclick="showPage('booking')">Book a Session →</a>
+</div>
+
 <!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#" onclick="showPage('home');closeMenu()">Home</a>
   <a href="#" onclick="showPage('about');closeMenu()">About</a>
   <a href="#" onclick="showPage('sessions');closeMenu()">Sessions</a>
-  <a href="#" onclick="showPage('testimonials');closeMenu()">Testimonials</a>
   <a href="#" onclick="showPage('faq');closeMenu()">FAQ</a>
   <a href="#" onclick="showPage('booking');closeMenu()" style="color:var(--gold)">Book a Session</a>
 </div>
@@ -1983,15 +2026,16 @@
           <span class="label text-gold animate-fade-up">Animal Communication</span>
         </div>
         <h1 class="hero-headline animate-fade-up-2">
-          Deepen your<br><em>connection</em><br>with the animals<br>you love.
+          Your animal<br>feels more than<br>you <em>know.</em>
         </h1>
         <p class="hero-subheadline animate-fade-up-3">
-          Sessions designed to give you insight, understanding, and a deeper sense of connection with the animals who share your life — with a particular heart for the quiet, gentle ones.
+          There are moments you wish they could just tell you. What they need. How they feel. Whether they're okay. Animal communication sessions with Renee Blackman help you understand the animals you love — with a particular heart for the quiet, sensitive ones.
         </p>
         <div class="hero-ctas animate-fade-up-4">
           <a href="#" class="btn btn-gold btn-arrow" onclick="showPage('booking')">Book a Session</a>
           <a href="#" class="btn btn-outline" onclick="scrollToSection('what-is')">Learn More</a>
         </div>
+        <p style="font-size:0.78rem;color:rgba(47,47,43,0.45);margin-top:16px;letter-spacing:0.05em;">Not sure yet? <a href="#" onclick="showPage('faq')" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(173,131,48,0.3);">Read the FAQ</a> or <a href="#" onclick="showPage('testimonials')" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(173,131,48,0.3);">hear from others</a> first.</p>
       </div>
       <div class="hero-image-frame">
         <div class="hero-image-placeholder" style="background:none;border:none;padding:0;overflow:hidden;">
@@ -2012,22 +2056,22 @@
     <div class="intro-strip-inner">
       <div class="intro-stat">
         <div class="intro-stat-number">5+</div>
-        <div class="intro-stat-label">Years with Animals</div>
+        <div class="intro-stat-label">Years of Animal Care</div>
       </div>
       <div class="intro-strip-divider"></div>
       <div class="intro-stat">
-        <div class="intro-stat-number">3</div>
+        <div class="intro-stat-number">4</div>
         <div class="intro-stat-label">Session Types</div>
       </div>
       <div class="intro-strip-divider"></div>
       <div class="intro-stat">
         <div class="intro-stat-number">100%</div>
-        <div class="intro-stat-label">Heart-Led Practice</div>
+        <div class="intro-stat-label">Honest, Heart-Led Practice</div>
       </div>
       <div class="intro-strip-divider"></div>
       <div class="intro-stat">
         <div class="intro-stat-number">∞</div>
-        <div class="intro-stat-label">Compassion for Your Animal</div>
+        <div class="intro-stat-label">Compassion, Always</div>
       </div>
     </div>
   </div>
@@ -2042,19 +2086,18 @@
       <h2 class="display-lg" style="color:var(--forest); max-width:700px;">What is animal communication?</h2>
 
       <div class="pull-quote">
-        "It's not about what I tell you your animal is thinking.<br>
-        It's about helping you feel closer to them."
+        "Most people sense something in their animal long before they can name it.<br>A session helps you trust what you already feel."
       </div>
 
       <div class="what-grid">
         <div class="what-text-col">
-          <p class="body-lg text-warm-grey">Animal communication is a practice of tuning in to the world of your animal — their feelings, experiences, and perspective — in order to build a deeper, more meaningful relationship with them. For animals who are naturally quiet, sensitive, or often misunderstood, this kind of attentive listening can be especially illuminating.</p>
+          <p class="body-lg text-warm-grey">Animal communication is the practice of listening to your animal at a deeper level — their feelings, their needs, their inner world. Not what we project onto them, but what they are actually experiencing. For animals who are naturally quiet, sensitive, or often misunderstood, this kind of attentive listening can be quietly life-changing.</p>
 
           <p class="body-md text-warm-grey">It's not magic, and it doesn't require you to believe anything outside your own experience. It's a compassionate process that works alongside the bond you already share with your animal.</p>
 
           <p class="body-md text-warm-grey">Through a session with Renee, you can explore what your animal may be experiencing — whether that's about their physical wellbeing, emotional needs, a change in the household, a behaviour concern, or simply a wish to feel more understood.</p>
 
-          <p class="body-md text-warm-grey">Many clients describe their sessions as quietly profound. Not because of anything dramatic, but because they finally feel like they've had a real conversation with their animal — and they've been heard, too.</p>
+          <p class="body-md text-warm-grey">Clients often describe their sessions as quietly life-changing. Not because something dramatic happened — but because for the first time, they felt like they truly understood their animal. And their animal had been truly heard.</p>
 
           <div class="mt-lg">
             <a href="#" class="btn btn-outline" onclick="showPage('about')">Meet Renee</a>
@@ -2077,7 +2120,7 @@
         <div class="eyebrow-line"></div>
         <span class="label text-gold">Simple. Gentle. Meaningful.</span>
       </div>
-      <h2 class="display-lg" style="color:var(--forest); max-width:600px;">How a session works</h2>
+      <h2 class="display-lg" style="color:var(--forest); max-width:600px;">What happens when you book</h2>
 
       <div class="steps-grid">
         <div class="step-card">
@@ -2089,19 +2132,19 @@
         <div class="step-card">
           <span class="step-number">02</span>
           <span class="step-icon">🌿</span>
-          <h3 class="step-title">Renee Connects</h3>
+          <h3 class="step-title">Renee listens</h3>
           <p class="step-body">Using your animal's name and photo as a focal point, Renee gently tunes in to their energy and experience — exploring feelings, impressions, and any messages they wish to share.</p>
         </div>
         <div class="step-card">
           <span class="step-number">03</span>
           <span class="step-icon">✉️</span>
-          <h3 class="step-title">You Receive Insights</h3>
+          <h3 class="step-title">You receive</h3>
           <p class="step-body">You'll receive a personalised audio recording, a beautifully formatted written PDF summary, and access to a private Dropbox folder containing all of your session resources — delivered with care and at a pace that feels right for you.</p>
         </div>
         <div class="step-card">
           <span class="step-number">04</span>
           <span class="step-icon">💛</span>
-          <h3 class="step-title">You Reconnect</h3>
+          <h3 class="step-title">You reconnect</h3>
           <p class="step-body">Take what resonates, sit with what surprises you, and trust what feels true. Many clients find renewed clarity, peace, or a simple deepening of the bond they already have.</p>
         </div>
       </div>
@@ -2120,33 +2163,33 @@
       <div class="who-grid">
         <div class="who-card">
           <span class="who-card-icon">🐾</span>
-          <h3 class="who-card-title">You want a deeper connection</h3>
-          <p class="who-card-body">You love your animal and simply want to understand them better — their personality, their world, and what makes them feel loved and secure.</p>
+          <h3 class="who-card-title">You love your animal but sometimes wonder if you truly understand what they need</h3>
+          <p class="who-card-body">You're already a devoted animal person. You just want to go deeper — to understand their world, their feelings, and whether you're getting it right for them.</p>
         </div>
         <div class="who-card">
           <span class="who-card-icon">💬</span>
-          <h3 class="who-card-title">You're navigating behaviour concerns</h3>
-          <p class="who-card-body">Your animal is showing behaviour that puzzles or worries you. You want to explore what might be driving it — from your animal's perspective.</p>
+          <h3 class="who-card-title">Something has changed and you can't figure out why</h3>
+          <p class="who-card-body">Your animal's behaviour has shifted. You've tried everything. You want to understand what's driving it — from their perspective, not just yours.</p>
         </div>
         <div class="who-card">
           <span class="who-card-icon">🌈</span>
-          <h3 class="who-card-title">You're facing end of life</h3>
-          <p class="who-card-body">Your animal is unwell, aging, or approaching the end of their life. You want to understand their experience and ensure their final time is full of peace and love.</p>
+          <h3 class="who-card-title">You're watching your animal age and want to get it right</h3>
+          <p class="who-card-body">They can't tell you if they're in pain, if they're scared, or if they're ready. A session can offer the clarity and peace you're searching for in one of the hardest seasons.</p>
         </div>
         <div class="who-card">
           <span class="who-card-icon">🕊️</span>
-          <h3 class="who-card-title">You're grieving a beloved animal</h3>
-          <p class="who-card-body">You've lost an animal companion and are seeking some sense of peace, closure, or connection. A passed animal session offers a gentle space for that.</p>
+          <h3 class="who-card-title">You've lost them — and the grief is real and deep</h3>
+          <p class="who-card-body">The world doesn't always understand how profound this loss is. A Rainbow Bridge session offers a gentle, held space to feel close to them again — and to find some peace.</p>
         </div>
         <div class="who-card">
           <span class="who-card-icon">🔄</span>
-          <h3 class="who-card-title">Life is changing</h3>
-          <p class="who-card-body">Moving house, welcoming a new baby, introducing another animal, or going through personal change — you want to include your animal in that conversation.</p>
+          <h3 class="who-card-title">Your life is changing and you want your animal to feel included</h3>
+          <p class="who-card-body">A new home, a new baby, a new animal, a relationship change — your animal feels all of it. A session helps you understand how they're coping and what they need from you right now.</p>
         </div>
         <div class="who-card">
           <span class="who-card-icon">🐇</span>
-          <h3 class="who-card-title">You have a rabbit, guinea pig, or small animal</h3>
-          <p class="who-card-body">Rabbits, guinea pigs, birds, and other sensitive or prey animals are a particular speciality. These are animals whose quiet natures can make them easy to misread — and whose inner lives are richer than most people realise.</p>
+          <h3 class="who-card-title">You have a rabbit, guinea pig, bird, or small animal who is so often misunderstood</h3>
+          <p class="who-card-body">These are animals whose quiet nature makes them easy to misread. With deep specialist experience in prey and sensitive animals, Renee brings a rare depth to understanding the ones the world often overlooks.</p>
         </div>
       </div>
     </div>
@@ -2227,9 +2270,9 @@
             <div class="eyebrow-line"></div>
             <span class="label text-gold">About Renee</span>
           </div>
-          <h2 class="display-md" style="color:var(--forest);">A lifetime of listening to animals.</h2>
+          <h2 class="display-md" style="color:var(--forest);">She's been listening to animals her whole life.</h2>
 
-          <p class="body-lg text-warm-grey mt-md">Long before I offered animal communication sessions, I was simply someone who loved animals deeply and showed up for them with everything I had.</p>
+          <p class="body-lg text-warm-grey mt-md">Long before Renee offered animal communication sessions, she was simply someone who loved animals deeply and showed up for them with everything she had.</p>
 
           <p class="body-md text-warm-grey">Through years of running The Pampered Bun — a rabbit-focused pet sitting and grooming business — educating families on rabbit welfare, and working hands-on with animals every day, I developed a way of being with animals that went beyond the practical.</p>
 
@@ -2303,8 +2346,8 @@
   <!-- FINAL CTA -->
   <section class="cta-section">
     <div class="container">
-      <h2 class="cta-headline">Your animal has <em>something</em><br>to say to you.</h2>
-      <p class="cta-sub">Gain the insight, understanding, and peace you've been looking for. Sessions are available for living and passed animals.</p>
+      <h2 class="cta-headline">They've been trying<br>to tell you <em>something.</em></h2>
+      <p class="cta-sub">You already love them. Now imagine truly understanding them. Sessions for living and passed animals — whenever you feel ready.</p>
       <div class="cta-buttons">
         <a href="#" class="btn btn-gold btn-arrow" onclick="showPage('booking')">Book a Session</a>
         <a href="#" class="btn btn-outline-ivory" onclick="showPage('sessions')">Explore Sessions</a>
@@ -2330,11 +2373,11 @@
   </section>
 
   <section class="booking-section">
-    <div class="container">
+    <div class="container" style="max-width:900px;">
       <div class="booking-grid">
 
         <!-- SIDEBAR -->
-        <div class="booking-sidebar">
+        <div class="booking-sidebar" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
           <div class="booking-sidebar-card">
             <h3>What happens next</h3>
             <ul class="booking-sidebar-list">
@@ -2353,9 +2396,34 @@
         </div>
 
         <!-- FORM -->
-        <div class="booking-form-area">
-          <h2 class="display-sm" style="color:var(--forest);margin-bottom:8px;">Session Enquiry</h2>
+                <!-- Testimonials on booking page -->
+        <div style="margin-bottom:40px;">
+          <p class="label text-gold" style="margin-bottom:20px;">What others have experienced</p>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+
+            <div style="background:var(--ivory);border:1px solid rgba(173,131,48,0.12);padding:24px 28px;position:relative;">
+              <p style="font-family:var(--font-display);font-style:italic;font-size:1rem;color:var(--forest);line-height:1.6;margin-bottom:14px;">"Renee was immediately able to tell why he was anxious and mentioned a swollen right side — which is where he had a tumour that he passed away from. Telling me that Baldr was happy with me gave me a deep sense of peace I needed since his passing."</p>
+              <p style="font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);">Kenneth B. — Rainbow Bridge, Baldr</p>
+            </div>
+
+            <div style="background:var(--ivory);border:1px solid rgba(173,131,48,0.12);padding:24px 28px;position:relative;">
+              <p style="font-family:var(--font-display);font-style:italic;font-size:1rem;color:var(--forest);line-height:1.6;margin-bottom:14px;">"Renee was able to tap into my dog's energy and described her essence perfectly. She described a scene which was incredibly accurate. From this reading, I gained important clarity and more confidence in how to move forward."</p>
+              <p style="font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);">Jasmin — Deep Bond, Maple</p>
+            </div>
+
+            <div style="background:var(--ivory);border:1px solid rgba(173,131,48,0.12);padding:24px 28px;position:relative;">
+              <p style="font-family:var(--font-display);font-style:italic;font-size:1rem;color:var(--forest);line-height:1.6;margin-bottom:14px;">"I am so glad I had this session. I went to the vet and he is indeed experiencing discomfort exactly where Renee described. I am so grateful we were able to find out early so Baz could get his treatment."</p>
+              <p style="font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);">Yulya — Deep Bond, Basil</p>
+            </div>
+
+          </div>
+        </div>
+
+<div class="booking-form-area">
+          <h2 class="display-sm" style="color:var(--forest);margin-bottom:8px;">Tell me about your animal</h2>
           <p style="font-size:0.88rem;color:var(--warm-grey);margin-bottom:36px;">Fill in the form below and Renee will be in touch within one business day.</p>
+
+          <div id="step1fields">
 
           <div class="form-group">
             <label class="form-label">Choose your session</label>
@@ -2425,7 +2493,17 @@
           <div class="form-group">
             <label class="form-label">Email Address</label>
             <input type="email" class="form-input" name="Email" id="emailField" placeholder="your@email.com">
-          </div>
+          </div><!-- close how did you hear -->
+
+          <!-- Step 1 Next button -->
+          <button type="button" onclick="goToStep2()" style="width:100%;padding:14px;background:var(--forest);color:var(--ivory);border:none;font-family:var(--font-body);font-size:0.8rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background 0.3s;margin-top:8px;" onmouseover="this.style.background='#4a5c50'" onmouseout="this.style.background='var(--forest)'">
+            Continue — Tell Me About Your Animal →
+          </button>
+
+          </div><!-- end step1fields -->
+
+          <!-- STEP 2 -->
+          <div id="step2fields" style="display:none;">
 
           <div class="form-row">
             <div class="form-group">
@@ -2467,6 +2545,17 @@
             </select>
           </div>
 
+          <!-- Back button -->
+          <button type="button" onclick="goToStep1()" style="width:100%;padding:12px;background:none;color:var(--warm-grey);border:1px solid rgba(111,130,116,0.3);font-family:var(--font-body);font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-bottom:16px;" onmouseover="this.style.borderColor='var(--forest)';this.style.color='var(--forest)'" onmouseout="this.style.borderColor='rgba(111,130,116,0.3)';this.style.color='var(--warm-grey)'">
+            ← Back
+          </button>
+
+          </div><!-- end step2fields -->
+
+          <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(111,130,116,0.08);border:1px solid rgba(111,130,116,0.2);margin-bottom:20px;">
+            <span style="color:var(--forest);font-size:1rem;flex-shrink:0;">✦</span>
+            <p style="font-size:0.8rem;color:var(--forest);line-height:1.5;"><strong>Renee responds within one business day.</strong> Once payment is received your session is confirmed and you'll receive your materials within 7–14 days.</p>
+          </div>
           <p style="font-size:0.78rem;color:var(--warm-grey);line-height:1.6;margin-bottom:24px;">By submitting this form you agree to Renee contacting you via email regarding your session enquiry. Your information will never be shared with third parties.</p>
 
           <!-- Formspree hidden config -->
@@ -2598,8 +2687,13 @@
             </div>
           </div>
 
-          <div class="mt-lg">
-            <a href="#" class="btn btn-primary btn-arrow" onclick="showPage('booking')">Book a Session with Renee</a>
+          <div style="margin-top:40px;padding:32px;background:var(--sage-pale);border-left:3px solid var(--gold);">
+            <p class="display-sm" style="color:var(--forest);margin-bottom:10px;">Ready to experience this yourself?</p>
+            <p class="body-md text-warm-grey" style="margin-bottom:24px;">A session with Renee is a simple, gentle process. You share your animal's details, Renee connects, and you receive everything in your private Dropbox folder — no calls, no pressure, just insight.</p>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;">
+              <a href="#" class="btn btn-primary btn-arrow" onclick="showPage('sessions')">See What a Session Looks Like</a>
+              <a href="#" class="btn btn-outline" onclick="showPage('booking')">Book Now</a>
+            </div>
           </div>
         </div>
       </div>
@@ -2678,6 +2772,10 @@
       </div>
       <h1>Sessions designed<br>for <em>your</em> journey.</h1>
       <p style="color:rgba(253,249,242,0.65);font-size:1.05rem;margin-top:16px;max-width:560px;">Each session is carefully tailored. Whether your animal is with you, navigating end of life, or has already passed — there is a space here for you both. Renee has a particular depth of experience with sensitive, prey, and often-overlooked animals — those whose quiet presence can make it hard to know what they're truly feeling.</p>
+      <div style="display:inline-flex;align-items:center;gap:10px;margin-top:20px;padding:10px 20px;background:rgba(173,131,48,0.15);border:1px solid rgba(173,131,48,0.3);">
+        <span style="color:var(--gold);font-size:0.9rem;">✦</span>
+        <p style="font-size:0.82rem;color:rgba(253,249,242,0.8);letter-spacing:0.05em;">Sessions are released in limited rounds — Renee is currently booking <strong style="color:var(--gold)">2–3 weeks out.</strong></p>
+      </div>
     </div>
   </section>
 
@@ -2707,10 +2805,8 @@
             <p style="font-size:0.78rem;color:var(--warm-grey);font-style:italic;margin-top:16px;padding:12px 16px;background:rgba(173,131,48,0.08);border-left:2px solid var(--gold);line-height:1.6;">Once you submit your booking request, a secure Stripe invoice will be emailed to you. Please note that payment must be received to confirm your spot, as unpaid sessions are subject to cancellation. If you have any questions or need assistance, you are always welcome to reach out.</p>
           </div>
           <div class="session-price-col">
-            <p class="session-price-label">Investment</p>
-            <p class="session-price" style="font-size:1.8rem;"><span>$</span>220</p>
-            <p class="session-duration" style="font-size:0.75rem;color:var(--warm-grey);line-height:1.5;">Per animal · +$100 per additional animal<br>Max 2 animals per session</p>
-            <p class="session-duration" style="margin-top:8px;">Written delivery<br>within 7–14 days</p>
+            <div style="display:flex;flex-direction:column;gap:4px;"><p class="session-price-label">Investment</p><p class="session-price" style="font-size:2rem;line-height:1;"><span>$</span>220 <span style="font-size:0.85rem;color:var(--warm-grey);font-weight:300;">AUD</span></p><p style="font-size:0.75rem;color:var(--warm-grey);line-height:1.5;">Per animal · +$100 per additional animal · Max 2 per session</p><p style="font-size:0.75rem;color:var(--warm-grey);margin-top:4px;">Delivered within 7–14 days</p></div>
+            <p style="font-size:0.72rem;color:rgba(253,249,242,0.6);text-align:center;line-height:1.5;margin-bottom:4px;">Ready to begin?</p>
             <a href="#" class="btn btn-primary btn-arrow" onclick="showPage('booking')">Book Now</a>
           </div>
         </div>
@@ -2741,10 +2837,8 @@
             <p style="font-size:0.78rem;color:var(--warm-grey);font-style:italic;margin-top:16px;padding:12px 16px;background:rgba(173,131,48,0.08);border-left:2px solid var(--gold);line-height:1.6;">Once you submit your booking request, a secure Stripe invoice will be emailed to you. Please note that payment must be received to confirm your spot, as unpaid sessions are subject to cancellation. If you have any questions or need assistance, you are always welcome to reach out.</p>
           </div>
           <div class="session-price-col">
-            <p class="session-price-label">Investment</p>
-            <p class="session-price"><span>$</span>330</p>
-            <p class="session-duration" style="font-size:0.75rem;color:var(--warm-grey);line-height:1.5;">One animal per session</p>
-            <p class="session-duration" style="margin-top:8px;">Written delivery<br>within 7–14 days</p>
+            <div style="display:flex;flex-direction:column;gap:4px;"><p class="session-price-label">Investment</p><p class="session-price" style="font-size:2rem;line-height:1;"><span>$</span>330 <span style="font-size:0.85rem;color:var(--warm-grey);font-weight:300;">AUD</span></p><p style="font-size:0.75rem;color:var(--warm-grey);line-height:1.5;">One animal per session</p><p style="font-size:0.75rem;color:var(--warm-grey);margin-top:4px;">Delivered within 7–14 days</p></div>
+            <p style="font-size:0.72rem;color:rgba(253,249,242,0.6);text-align:center;line-height:1.5;margin-bottom:4px;">Ready to begin?</p>
             <a href="#" class="btn btn-primary btn-arrow" onclick="showPage('booking')">Book Now</a>
           </div>
         </div>
@@ -2789,10 +2883,7 @@
             <p style="font-size:0.78rem;color:var(--warm-grey);font-style:italic;margin-top:16px;padding:12px 16px;background:rgba(173,131,48,0.08);border-left:2px solid var(--gold);line-height:1.6;">Once you submit your booking request, a secure Stripe invoice will be emailed to you. Please note that payment must be received to confirm your spot, as unpaid sessions are subject to cancellation. If you have any questions or need assistance, you are always welcome to reach out.</p>
           </div>
           <div class="session-price-col">
-            <p class="session-price-label">Investment</p>
-            <p class="session-price"><span>$</span>275</p>
-            <p class="session-duration" style="font-size:0.75rem;color:var(--warm-grey);line-height:1.5;">One animal per session</p>
-            <p class="session-duration" style="margin-top:8px;">Written delivery<br>within 7–14 days</p>
+            <div style="display:flex;flex-direction:column;gap:4px;"><p class="session-price-label">Investment</p><p class="session-price" style="font-size:2rem;line-height:1;"><span>$</span>275 <span style="font-size:0.85rem;color:var(--warm-grey);font-weight:300;">AUD</span></p><p style="font-size:0.75rem;color:var(--warm-grey);line-height:1.5;">One animal per session</p><p style="font-size:0.75rem;color:var(--warm-grey);margin-top:4px;">Delivered within 7–14 days</p></div>
             <a href="#" class="btn btn-primary btn-arrow" onclick="showPage('booking')">Book Now</a>
           </div>
         </div>
@@ -2822,9 +2913,7 @@
             <p style="font-size:0.78rem;color:var(--warm-grey);font-style:italic;margin-top:16px;padding:12px 16px;background:rgba(173,131,48,0.08);border-left:2px solid var(--gold);line-height:1.6;">Once you submit your booking request, a secure Stripe invoice will be emailed to you. Please note that payment must be received to confirm your spot, as unpaid sessions are subject to cancellation. If you have any questions or need assistance, you are always welcome to reach out.</p>
           </div>
           <div class="session-price-col">
-            <p class="session-price-label">Investment</p>
-            <p class="session-price"><span>$</span>140</p>
-            <p class="session-duration">Written delivery<br>within 3–5 days</p>
+            <div style="display:flex;flex-direction:column;gap:4px;"><p class="session-price-label">Investment</p><p class="session-price" style="font-size:2rem;line-height:1;"><span>$</span>140 <span style="font-size:0.85rem;color:var(--warm-grey);font-weight:300;">AUD</span></p><p style="font-size:0.75rem;color:var(--warm-grey);margin-top:4px;">Delivered within 3–5 days</p></div>
             <a href="#" class="btn btn-primary btn-arrow" onclick="showPage('booking')">Book Now</a>
           </div>
         </div>
@@ -2846,9 +2935,35 @@
     <div class="container">
       <h2 class="cta-headline">Not sure which session<br>is right for <em>you?</em></h2>
       <p class="cta-sub">Reach out and I'll help you choose. Every animal's situation is unique, and I want your session to be exactly what you need.</p>
-      <div class="cta-buttons">
-        <a href="#" class="btn btn-gold btn-arrow" onclick="showPage('booking')">Book a Session</a>
-        <a href="#" class="btn btn-outline-ivory" onclick="showPage('faq')">Read FAQs</a>
+
+      <!-- Contact Renee mini form -->
+      <div style="max-width:560px;margin:40px auto 0;text-align:left;position:relative;z-index:2;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+          <div>
+            <label style="display:block;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(253,249,242,0.6);margin-bottom:6px;">Your Name</label>
+            <input type="text" id="contactName" placeholder="Your name" style="width:100%;padding:12px 14px;background:rgba(253,249,242,0.1);border:1px solid rgba(253,249,242,0.2);color:var(--ivory);font-family:var(--font-body);font-size:0.9rem;font-weight:300;outline:none;border-radius:0;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(253,249,242,0.2)'">
+          </div>
+          <div>
+            <label style="display:block;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(253,249,242,0.6);margin-bottom:6px;">Your Email</label>
+            <input type="email" id="contactEmail" placeholder="your@email.com" style="width:100%;padding:12px 14px;background:rgba(253,249,242,0.1);border:1px solid rgba(253,249,242,0.2);color:var(--ivory);font-family:var(--font-body);font-size:0.9rem;font-weight:300;outline:none;border-radius:0;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(253,249,242,0.2)'">
+          </div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(253,249,242,0.6);margin-bottom:6px;">Your Message</label>
+          <textarea id="contactMessage" placeholder="Tell me about your animal and any questions you have..." rows="4" style="width:100%;padding:12px 14px;background:rgba(253,249,242,0.1);border:1px solid rgba(253,249,242,0.2);color:var(--ivory);font-family:var(--font-body);font-size:0.9rem;font-weight:300;outline:none;border-radius:0;resize:vertical;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(253,249,242,0.2)'"></textarea>
+        </div>
+
+        <div id="contactSuccess" style="display:none;background:rgba(253,249,242,0.1);border:1px solid rgba(253,249,242,0.3);padding:16px;text-align:center;margin-bottom:12px;">
+          <p style="color:var(--ivory);font-family:var(--font-display);font-style:italic;font-size:1rem;">Message sent ✦ Renee will be in touch soon.</p>
+        </div>
+        <div id="contactError" style="display:none;background:rgba(180,80,80,0.15);border:1px solid rgba(180,80,80,0.3);padding:16px;text-align:center;margin-bottom:12px;">
+          <p style="color:#ffcccc;font-size:0.85rem;">Something went wrong. Please email Renee directly at <a href="mailto:contact@reneeblackmanofficial.com" style="color:var(--gold);">contact@reneeblackmanofficial.com</a></p>
+        </div>
+
+        <button onclick="submitContact()" style="width:100%;padding:15px;background:var(--gold);color:var(--ivory);border:none;font-family:var(--font-body);font-size:0.8rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background 0.3s;" onmouseover="this.style.background='#8a6520'" onmouseout="this.style.background='var(--gold)'">
+          Send Message →
+        </button>
+        
       </div>
     </div>
   </section>
@@ -2952,6 +3067,13 @@
 
       </div>
 
+      <!-- Mid-page CTA -->
+      <div style="text-align:center;padding:48px 0 24px;">
+        <p class="display-sm" style="color:var(--forest);margin-bottom:12px;">Feeling ready?</p>
+        <p class="body-md text-warm-grey" style="margin-bottom:24px;max-width:420px;margin-left:auto;margin-right:auto;">Every one of these stories started with someone simply deciding to try. Your animal is waiting.</p>
+        <a href="#" class="btn btn-primary btn-arrow" onclick="showPage('booking')">Book a Session</a>
+      </div>
+
       <!-- FUTURE MEDIA SECTION -->
       <div class="media-upload-cta">
         <h3 class="display-sm" style="color:var(--forest);margin-bottom:12px;">Video & audio testimonials coming soon</h3>
@@ -3001,6 +3123,16 @@
       </div>
 
       <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">How much does a session cost, and is it worth it?<span class="faq-chevron"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Sessions range from $140 AUD for a Follow-Up to $330 AUD for a Rainbow Bridge session. Each session involves significant time, care, and focused energy — including the communication itself, a personalised audio recording, a written PDF summary, and private Dropbox access to all your materials. What clients most often say is that the value isn't in the price — it's in the clarity, the peace, or the moment they finally feel like they understand their animal. That said, if you're unsure whether a session is right for you, you're always welcome to reach out and ask before booking.</div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">How do I know if a session is right for me?<span class="faq-chevron"></span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">If you've ever wished your animal could just tell you how they're feeling — a session is right for you. You don't need to be certain. You don't need to have a dramatic reason. You just need to love your animal and be open to understanding them more deeply. Curiosity is enough to begin.</div></div>
+        </div>
 
         <div class="faq-item">
           <button class="faq-question" onclick="toggleFaq(this)">What is animal communication?<span class="faq-chevron"></span></button>
@@ -3101,15 +3233,14 @@
         <li><a href="#" onclick="showPage('sessions')">Deep Bond Session</a></li>
         <li><a href="#" onclick="showPage('sessions')">Rainbow Bridge Session</a></li>
         <li><a href="#" onclick="showPage('sessions')">Follow-Up Session</a></li>
+        <li><a href="#" onclick="showPage('sessions')">Wellness Compass</a></li>
       </ul>
     </div>
     <div>
       <p class="footer-col-title">Get in Touch</p>
       <ul class="footer-links">
-        <li><a href="#">Instagram</a></li>
-        <li><a href="#">Facebook</a></li>
-        <li><a href="#">Email Renee</a></li>
-        <li><a href="#" style="color:var(--gold-light);opacity:0.7;font-size:0.78rem;">The Pampered Bun ↗</a></li>
+        <li><a href="https://instagram.com/itsreneeblackman" target="_blank">Instagram — come say hi 👋</a></li>
+        <li><a href="#" onclick="showPage('sessions');setTimeout(()=>document.getElementById('contactName').scrollIntoView({behavior:'smooth',block:'center'}),300)">Email Renee</a></li>
       </ul>
     </div>
   </div>
@@ -3130,6 +3261,9 @@
 <script>
   // Page routing
   function showPage(pageId) {
+    // Hide sticky btn on booking page
+    const stickyBtn = document.getElementById('mobileStickyBtn');
+    if (stickyBtn) stickyBtn.style.display = pageId === 'booking' ? 'none' : '';
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const target = document.getElementById('page-' + pageId);
     if (target) {
@@ -3209,6 +3343,84 @@
   function scrollToSection(id) {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+
+
+  // Two-step booking form
+  function goToStep2() {
+    const firstName = document.getElementById('firstName')?.value.trim();
+    const email = document.getElementById('emailField')?.value.trim();
+    if (!firstName || !email) {
+      alert("Please enter your name and email to continue.");
+      return;
+    }
+    document.getElementById('step1fields').style.display = 'none';
+    document.getElementById('step2fields').style.display = 'block';
+    document.getElementById('step1indicator').style.background = 'rgba(111,130,116,0.3)';
+    document.getElementById('step1indicator').style.color = 'var(--warm-grey)';
+    document.getElementById('step2indicator').style.background = 'var(--forest)';
+    document.getElementById('step2indicator').style.color = 'var(--ivory)';
+    document.getElementById('step2indicator').querySelector('span').style.background = 'var(--ivory)';
+    document.getElementById('step2indicator').querySelector('span').style.color = 'var(--forest)';
+    document.querySelector('.booking-form-area').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function goToStep1() {
+    document.getElementById('step2fields').style.display = 'none';
+    document.getElementById('step1fields').style.display = 'block';
+    document.getElementById('step2indicator').style.background = 'var(--sage-pale)';
+    document.getElementById('step2indicator').style.color = 'var(--warm-grey)';
+    document.getElementById('step1indicator').style.background = 'var(--forest)';
+    document.getElementById('step1indicator').style.color = 'var(--ivory)';
+    document.querySelector('.booking-form-area').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  // Contact mini form on sessions page
+  async function submitContact() {
+    const name = document.getElementById('contactName')?.value.trim();
+    const email = document.getElementById('contactEmail')?.value.trim();
+    const message = document.getElementById('contactMessage')?.value.trim();
+
+    if (!name || !email || !message) {
+      alert('Please fill in your name, email, and message.');
+      return;
+    }
+
+    const btn = event.currentTarget;
+    btn.textContent = 'Sending...';
+    btn.style.opacity = '0.7';
+    btn.disabled = true;
+
+    const formData = new FormData();
+    formData.append('Name', name);
+    formData.append('Email', email);
+    formData.append('_replyto', email);
+    formData.append('_subject', 'Session Question — Renee Blackman Animal Communication');
+    formData.append('Message', message);
+
+    try {
+      const response = await fetch('https://formspree.io/f/xjgdynwz', {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (response.ok) {
+        document.getElementById('contactSuccess').style.display = 'block';
+        document.getElementById('contactError').style.display = 'none';
+        btn.style.display = 'none';
+        document.getElementById('contactName').value = '';
+        document.getElementById('contactEmail').value = '';
+        document.getElementById('contactMessage').value = '';
+      } else {
+        throw new Error('Failed');
+      }
+    } catch (err) {
+      document.getElementById('contactError').style.display = 'block';
+      btn.textContent = 'Send Message →';
+      btn.style.opacity = '1';
+      btn.disabled = false;
+    }
   }
 
   // Formspree submission
